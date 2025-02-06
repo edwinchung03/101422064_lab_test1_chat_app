@@ -4,8 +4,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const userModel = require(__dirname + '/models/User');
-const gmModel = require(__dirname + '/models/groupMessage');
-const pmModel = require(__dirname + '/models/privateMessage');
+const gmModel = require(__dirname + '/models/Group_Message');
+const pmModel = require(__dirname + '/models/Private_Message');
 
 var dbUrl = 'mongodb+srv://admin:Password12345@cluster0.ozeam.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 mongoose.connect(dbUrl, {
@@ -18,13 +18,6 @@ mongoose.connect(dbUrl, {
 });
 
 const socketio = require('socket.io');
-const formatMessage = require('./models/messages');
-const {
-  userJoin,
-  getCurrentUser,
-  userLeave,
-  getRoomUsers
-} = require('./models/users');
 
 const app = express();
 const server = http.createServer(app);
@@ -86,12 +79,12 @@ io.on('connection', socket => {
 
 //http://localhost:3000/signup
 app.get('/signup', async (req, res) => {
-  res.sendFile(__dirname + '/public/signup.html')
+  res.sendFile(__dirname + '/view/signup.html')
 });
 
 //http://localhost:3000/login
 app.get('/login', async (req, res) => {
-  res.sendFile(__dirname + '/public/login.html')
+  res.sendFile(__dirname + '/view/login.html')
 });
 app.post('/login', async (req, res) => {
 const user = new userModel(req.body);
@@ -104,7 +97,7 @@ try {
       
       res.send(err)
     }else{
-      res.sendFile(__dirname + '/public/login.html')
+      res.sendFile(__dirname + '/view/login.html')
     }
   });
 } catch (err) {
@@ -114,7 +107,7 @@ try {
 
 //http://localhost:3000/
 app.get('/', async (req, res) => {
-res.sendFile(__dirname + '/public/login.html')
+res.sendFile(__dirname + '/view/login.html')
 });
 app.post('/', async (req, res) => {
 const username=req.body.username
